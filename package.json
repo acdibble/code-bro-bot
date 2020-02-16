@@ -1,0 +1,38 @@
+{
+  "name": "code-bro-bot",
+  "version": "0.0.1",
+  "description": "it's code, bro",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "ts-node src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acdibble/code-bro-bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/acdibble/code-bro-bot/issues"
+  },
+  "homepage": "https://github.com/acdibble/code-bro-bot#readme",
+  "devDependencies": {
+    "@types/chai": "^4.2.9",
+    "@types/express": "^4.17.2",
+    "@types/mocha": "^7.0.1",
+    "@types/node": "^13.7.1",
+    "@typescript-eslint/eslint-plugin": "^2.19.2",
+    "@typescript-eslint/parser": "^2.19.2",
+    "chai": "^4.2.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.1",
+    "mocha": "^7.0.1",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
