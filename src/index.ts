@@ -1,10 +1,18 @@
 import 'dotenv/config';
 import express from 'express';
-import { clap } from './commands';
+import { bro } from './commands';
+import verifySignature from './authentication/verifySignature';
+import captureBuffer from './authentication/captureBuffer';
 
 const app = express();
 
-app.use('/api', clap);
+app.use(
+  express.json({ verify: captureBuffer }),
+  express.urlencoded({ extended: true, verify: captureBuffer }),
+  verifySignature,
+);
+
+app.use(bro);
 
 app.get('/ping', (req, res) => {
   res.end('pong');

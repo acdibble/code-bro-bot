@@ -1,1 +1,1 @@
-export { default as clap } from './clap';
+export { default as bro } from './bro';
