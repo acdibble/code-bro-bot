@@ -1,3 +1,1 @@
-import clap from './clap';
-
-export { clap };
+export { default as clap } from './clap';
