@@ -1,3 +1,4 @@
+import 'dotenv';
 import express from 'express';
 import { clap } from './commands';
 
@@ -9,6 +10,6 @@ app.get('/', (_req, res) => {
   res.json({ response: 'test' });
 });
 
-app.listen(3000, () => {
-  console.log('Listening on 3000');
+app.listen(process.env.PORT, () => {
+  console.log(`Listening on ${process.env.PORT}`);
 });
