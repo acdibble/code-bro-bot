@@ -6,14 +6,14 @@ import captureBuffer from './authentication/captureBuffer';
 
 const app = express();
 
-app.use(
-  express.json({ verify: captureBuffer }),
-  express.urlencoded({ extended: true, verify: captureBuffer }),
-  verifySignature,
-);
+// app.use(
+//   express.json({ verify: captureBuffer }),
+// );
 
 app.use(
   '/commands',
+  express.urlencoded({ extended: true, verify: captureBuffer }),
+  verifySignature,
   commands,
 );
 
@@ -28,3 +28,5 @@ app.all('*', (req, res) => {
 app.listen(process.env.PORT, () => {
   console.log(`Listening on ${process.env.PORT}`);
 });
+
+export default app;
