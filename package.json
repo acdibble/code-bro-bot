@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "ts-node src",
-    "test": "mocha -r ts-node/register tests/**/*.test.ts --exit",
+    "test": "mocha -r ts-node/register tests/**/*.test.ts",
     "lint": "eslint ./**/*.ts --fix"
   },
   "husky": {

@@ -1,5 +1,5 @@
-import app from './server';
+import server from './server';
 
-app.listen(process.env.PORT, () => {
+server.listen(process.env.PORT, () => {
   console.log(`Listening on ${process.env.PORT}`);
 });
