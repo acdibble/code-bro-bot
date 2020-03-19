@@ -1,5 +1,5 @@
 import chai, { expect } from 'chai';
-import app from '../src';
+import app from '../src/server';
 
 import chaiHTTP = require('chai-http')
 
@@ -11,6 +11,13 @@ describe('Server', () => {
       .get('/ping');
 
     expect(res.status).to.equal(200);
-    expect(res.text).to.eql('pong');
+    expect(res.text).to.equal('pong');
+  });
+
+  it('handles 404s', async () => {
+    const res = await chai.request(app)
+      .get('/something');
+
+    expect(res.status).to.equal(404);
   });
 });
