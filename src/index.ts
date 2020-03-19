@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
-import { bro } from './commands';
+import commands from './commands';
 import verifySignature from './authentication/verifySignature';
 import captureBuffer from './authentication/captureBuffer';
 
@@ -12,7 +12,10 @@ app.use(
   verifySignature,
 );
 
-app.use(bro);
+app.use(
+  '/commands',
+  commands,
+);
 
 app.get('/ping', (req, res) => {
   res.end('pong');

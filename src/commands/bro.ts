@@ -1,6 +1,5 @@
-import { Router } from 'express';
+import { Request, Response } from 'express';
 
-export default Router()
-  .post('/bro', (req, res) => {
-    res.json({ response: 'bro' });
-  });
+export default (req: Request, res: Response) => {
+  res.json({ response: 'bro' });
+};
