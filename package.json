@@ -6,7 +6,13 @@
   "type": "module",
   "scripts": {
     "dev": "ts-node src",
-    "test": "mocha -r ts-node/register tests/**/*.test.ts --exit"
+    "test": "mocha -r ts-node/register tests/**/*.test.ts --exit",
+    "lint": "eslint ./**/*.ts --fix"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test"
+    }
   },
   "repository": {
     "type": "git",
@@ -31,6 +37,7 @@
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.20.1",
+    "husky": "^4.2.3",
     "mocha": "^7.1.1",
     "ts-node": "^8.6.2",
     "typescript": "^3.7.5"
