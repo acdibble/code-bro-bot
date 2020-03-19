@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon --watch src --ext ts --exec ts-node src/index.ts",
-    "test": "mocha -r ts-node/register tests/**/*.test.ts",
+    "test": "mocha -r ts-node/register test/**/*.test.ts",
     "lint": "eslint ./**/*.ts --fix"
   },
   "husky": {
