@@ -6,10 +6,6 @@ import captureBuffer from '../authentication/captureBuffer';
 
 const server = express();
 
-// server.use(
-//   express.json({ verify: captureBuffer }),
-// );
-
 server.use(
   '/commands',
   express.urlencoded({ extended: true, verify: captureBuffer }),
