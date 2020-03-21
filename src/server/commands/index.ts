@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { Slack, CodeBro } from '../../types';
 import bro from './bro';
+import help from './help';
 
 export default Router()
   .post('/', async (req: Slack.IncomingRequest<Slack.CommandRequest>, res) => {
@@ -12,6 +13,6 @@ export default Router()
         await bro(req.body);
         break;
       default:
-        console.log('this is the default case');
+        await help(req.body.response_url);
     }
   });
