@@ -27,11 +27,7 @@ describe('verifySignature', () => {
 
   it('rejects requests without a signature header', () => {
     const stub = sinon.stub();
-    verifySignature({
-      headers: {
-        'x-slack-request-timestamp': '1',
-      },
-    }, {}, stub);
+    verifySignature({ headers: { 'x-slack-request-timestamp': '1' } }, {}, stub);
     const error: HTTPError = stub.args[0][0];
 
     assert.instanceOf(error, HTTPError);
@@ -41,12 +37,7 @@ describe('verifySignature', () => {
 
   it('rejects requests without a request body', () => {
     const stub = sinon.stub();
-    verifySignature({
-      headers: {
-        'x-slack-request-timestamp': '1',
-        'x-slack-signature': 'sig',
-      },
-    }, {}, stub);
+    verifySignature({ headers: { 'x-slack-request-timestamp': '1', 'x-slack-signature': 'sig' } }, {}, stub);
     const error: HTTPError = stub.args[0][0];
 
     assert.instanceOf(error, HTTPError);
@@ -80,7 +71,6 @@ describe('verifySignature', () => {
         'x-slack-signature': 'v0=7dc8eec6b9883ad392e6abb39fa279a18e24d36fc83cc286f8c79c92b096dc6a',
       },
     };
-
 
     bufferStore.set(request, Buffer.from('body'));
 
