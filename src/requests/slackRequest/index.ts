@@ -1,7 +1,7 @@
 import * as querystring from 'querystring';
-import RequestError from './RequestError';
 import { Slack, CodeBro } from '../../types';
 import request from '../request';
+import HTTPError from '../../HTTPError';
 
 const BASE_URL = 'https://slack.com/api';
 
@@ -31,7 +31,7 @@ async function slackRequest(slackMethod: Slack.Method, { params, httpMethod = 'G
       .on('data', (chunk) => { body = Buffer.concat([body, chunk]); })
       .on('end', () => {
         if (!res.statusCode || res.statusCode < 200 || res.statusCode >= 300) {
-          reject(new RequestError(res, body.toString()));
+          reject(new HTTPError(res.statusCode, body.toString()));
         } else {
           resolve(JSON.parse(body.toString()));
         }
