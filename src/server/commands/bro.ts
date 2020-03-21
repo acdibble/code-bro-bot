@@ -2,7 +2,7 @@ import { Slack } from '../../types';
 import respond from '../../requests/respond';
 import postMessage from '../../messages/postMessage';
 
-const isAtUser = (user: string): boolean => /<@[A-Z0-9]+\|\w+>/.test(user);
+const isAtUser = (user: string): boolean => /<@[A-Z\d]+\|[\w.\d]+>/.test(user);
 
 export default async (body: Slack.CommandRequest): Promise<void> => {
   const {
