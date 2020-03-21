@@ -1,8 +1,7 @@
 import { RequestOptions } from 'https';
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export enum Command {
-  bro = '/bro'
+  Bro = 'bro'
 }
 
 export interface ExtendedOptions extends RequestOptions {

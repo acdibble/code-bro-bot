@@ -1,24 +1,24 @@
-import { Response } from 'express';
-// import getGeneral from '../channels/getGeneral';
 import { Slack } from '../../types';
-import hookRequest from '../../requests/hookRequest';
+import respond from '../../requests/respond';
 import postMessage from '../../messages/postMessage';
 
-export default async (
-  req: Slack.IncomingRequest<Slack.CommandRequest>,
-  res: Response,
-): Promise<void> => {
-  res.end();
+const isAtUser = (user: string): boolean => /<@[A-Z0-9]+\|\w+>/.test(user);
+
+export default async (body: Slack.CommandRequest): Promise<void> => {
   const {
+    text,
     channel_name: channelName,
-    user_id: userId,
+    channel_id: channelId,
     response_url: responseUrl,
-  } = req.body;
+  } = body;
+
+  const [, user] = text.split(' ');
 
   if (channelName === 'directmessage') {
-    await hookRequest(responseUrl, { text: "bro you can't do that here bro" });
-    res.end();
+    await respond(responseUrl, { text: "bro you can't do that here bro", response_type: 'ephemeral' });
+  } else if (!user || !isAtUser(user)) {
+    await respond(responseUrl, { text: 'bro you need to @someone bro', response_type: 'ephemeral' });
   } else {
-    await postMessage(userId, 'test');
+    await postMessage(channelId, `${user}, bro...`);
   }
 };

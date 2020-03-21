@@ -14,3 +14,5 @@ export interface RequestOptions<T = undefined> {
   httpMethod: 'GET' | 'POST';
   params?: T extends RequestBody ? RequestBody : undefined;
 }
+
+export { default as MessageResponseRequest } from './MessageResponseRequest';

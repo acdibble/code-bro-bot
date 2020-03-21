@@ -2,13 +2,12 @@ import * as https from 'https';
 import { IncomingMessage } from 'http';
 import { CodeBro } from '../types';
 
-type NoHandleResponseOptions = { handleResponse: false } & CodeBro.ExtendedOptions;
+type NoHandleResponse = { handleResponse: false } & CodeBro.ExtendedOptions;
 
-type HandleResponseOptions = { handleResponse: true | undefined } & CodeBro.ExtendedOptions;
+type HandleResponse = { handleResponse: true | undefined } & CodeBro.ExtendedOptions;
 
-function request(url: string, options: NoHandleResponseOptions): Promise<void>;
-function request(url: string, options: HandleResponseOptions): Promise<IncomingMessage>;
-function request(url: string, options: CodeBro.ExtendedOptions): Promise<IncomingMessage>;
+function request(url: string, options: NoHandleResponse): Promise<void>;
+function request(url: string, options: HandleResponse | CodeBro.ExtendedOptions): Promise<IncomingMessage>;
 function request(url: string, options: CodeBro.ExtendedOptions): Promise<IncomingMessage | void> {
   return new Promise((resolve, reject) => {
     const {

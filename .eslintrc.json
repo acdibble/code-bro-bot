@@ -46,6 +46,17 @@
         "@typescript-eslint/indent": [
             "error",
             2
+        ],
+        "max-len": [
+            "error",
+            120
+        ],
+        "camelcase": "off",
+        "@typescript-eslint/camelcase": [
+            "error",
+            {
+                "properties": "never"
+            }
         ]
     }
 }
