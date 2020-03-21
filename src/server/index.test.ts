@@ -1,7 +1,7 @@
 import chai, { expect } from 'chai';
-import server from '../src/server';
+import server from '.';
 
-import chaiHTTP = require('chai-http')
+import chaiHTTP = require('chai-http');
 
 chai.use(chaiHTTP);
 

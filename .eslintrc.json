@@ -1,7 +1,8 @@
 {
     "env": {
         "es6": true,
-        "node": true
+        "node": true,
+        "mocha": true
     },
     "extends": [
         "airbnb-base",
@@ -56,6 +57,14 @@
             "error",
             {
                 "properties": "never"
+            }
+        ],
+        "import/no-extraneous-dependencies": [
+            "error",
+            {
+                "devDependencies": [
+                    "src/**/*.test.ts"
+                ]
             }
         ]
     }
