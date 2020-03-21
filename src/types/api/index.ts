@@ -1,7 +1,8 @@
 import { RequestOptions } from 'https';
 
 export enum Command {
-  Bro = 'bro'
+  Bro = 'bro',
+  Help = 'help'
 }
 
 export interface ExtendedOptions extends RequestOptions {

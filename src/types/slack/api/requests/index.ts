@@ -1,5 +1,4 @@
-export enum Method {
-  ConversationsList = 'conversations.list',
+export const enum Method {
   PostMessage = 'chat.postMessage'
 }
 

@@ -9,7 +9,6 @@ describe('verifySignature', () => {
 
   before(() => {
     process.env.SLACK_SIGNING_SECRET = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
-    process.env.SLACK_OAUTH_TOKEN = 'xoxb-000000000000-1111111111111-ABCDABCDABCDABCDABCDABCD';
   });
 
   after(() => {

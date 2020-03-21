@@ -18,7 +18,7 @@ function request(url: string, options: CodeBro.ExtendedOptions): Promise<Incomin
     const req = https.request(url, opts, handleResponse ? resolve : undefined)
       .on('error', reject);
 
-    req.write(data || null);
+    req.write(data);
     req.end();
 
     if (!handleResponse) {

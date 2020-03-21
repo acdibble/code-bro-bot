@@ -9,6 +9,7 @@ const server = express();
 server.use(
   '/commands',
   express.urlencoded({ extended: true, verify: captureBuffer }),
+  express.json({ verify: captureBuffer }),
   verifySignature,
   commands,
 );
