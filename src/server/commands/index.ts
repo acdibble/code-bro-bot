@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import bro from './bro';
-import { Slack } from '../types';
+import { CodeBro } from '../../types';
 
 export default Router()
-  .post(Slack.Command.bro, bro);
+  .post(CodeBro.Command.bro, bro);

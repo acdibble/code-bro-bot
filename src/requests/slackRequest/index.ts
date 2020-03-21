@@ -1,23 +1,29 @@
 import * as querystring from 'querystring';
 import RequestError from './RequestError';
-import { Slack } from '../../types';
+import { Slack, CodeBro } from '../../types';
 import request from '../request';
 
 const BASE_URL = 'https://slack.com/api';
 
+/* eslint-disable max-len */
+async function slackRequest(slackMethod: Slack.Method.PostMessage, options: Required<Slack.RequestOptions<Slack.PostMessageOptions>>): Promise<any>;
+async function slackRequest(slackMethod: Slack.Method.ConversationsList, options: Slack.RequestOptions): Promise<any>;
+async function slackRequest(slackMethod: Slack.Method, { params, httpMethod = 'GET' }: Slack.RequestOptions<Slack.RequestBody | undefined>): Promise<any> {
+  const url = `${BASE_URL}/${slackMethod}${httpMethod === 'GET'
+    ? `?${querystring.stringify({ token: process.env.SLACK_OAUTH_TOKEN })}`
+    : ''}`;
 
-const slackRequest: Slack.Request = async (
-  slackMethod: Slack.Method,
-  { query, httpMethod = 'GET' }: Slack.RequestOptions,
-): Promise<any> => {
-  const url = `${BASE_URL}/${slackMethod}?${querystring.stringify({
-    ...query,
-    token: process.env.SLACK_OAUTH_TOKEN,
-  })}`;
+  const opts: CodeBro.ExtendedOptions = { method: httpMethod };
 
-  const res = await request(url, {
-    method: httpMethod,
-  });
+  if (httpMethod === 'POST') {
+    opts.data = httpMethod === 'POST' ? JSON.stringify(params) : undefined;
+    opts.headers = {
+      'content-type': 'application/json;charset=utf8',
+      authorization: `Bearer ${process.env.SLACK_OAUTH_TOKEN}`,
+    };
+  }
+
+  const res = await request(url, opts);
 
   return new Promise((resolve, reject) => {
     let body = Buffer.alloc(0);
@@ -31,6 +37,6 @@ const slackRequest: Slack.Request = async (
         }
       });
   });
-};
+}
 
 export default slackRequest;

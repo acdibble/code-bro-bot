@@ -4,7 +4,8 @@
         "node": true
     },
     "extends": [
-        "airbnb-base"
+        "airbnb-base",
+        "plugin:@typescript-eslint/recommended"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -36,6 +37,15 @@
                 "ts": "never"
             }
         ],
-        "@typescript-eslint/no-unused-vars": "error"
+        "@typescript-eslint/no-unused-vars": "error",
+        "semi": "off",
+        "@typescript-eslint/semi": [
+            "error"
+        ],
+        "indent": "off",
+        "@typescript-eslint/indent": [
+            "error",
+            2
+        ]
     }
 }

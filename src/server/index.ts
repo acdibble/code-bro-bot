@@ -1,8 +1,8 @@
 import 'dotenv/config';
 import express from 'express';
 import commands from './commands';
-import verifySignature from './authentication/verifySignature';
-import captureBuffer from './authentication/captureBuffer';
+import verifySignature from '../authentication/verifySignature';
+import captureBuffer from '../authentication/captureBuffer';
 
 const server = express();
 

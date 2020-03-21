@@ -1,13 +1,16 @@
 import * as https from 'https';
 import { IncomingMessage } from 'http';
+import { CodeBro } from '../types';
 
-interface ExtendedOptions extends https.RequestOptions {
-  data?: string;
-  handleResponse?: boolean
-}
+type NoHandleResponseOptions = { handleResponse: false } & CodeBro.ExtendedOptions;
 
-const request = (url: string, options: ExtendedOptions): Promise<IncomingMessage> => (
-  new Promise((resolve, reject) => {
+type HandleResponseOptions = { handleResponse: true | undefined } & CodeBro.ExtendedOptions;
+
+function request(url: string, options: NoHandleResponseOptions): Promise<void>;
+function request(url: string, options: HandleResponseOptions): Promise<IncomingMessage>;
+function request(url: string, options: CodeBro.ExtendedOptions): Promise<IncomingMessage>;
+function request(url: string, options: CodeBro.ExtendedOptions): Promise<IncomingMessage | void> {
+  return new Promise((resolve, reject) => {
     const {
       data,
       handleResponse = true,
@@ -22,7 +25,7 @@ const request = (url: string, options: ExtendedOptions): Promise<IncomingMessage
     if (!handleResponse) {
       resolve();
     }
-  })
-);
+  });
+}
 
 export default request;

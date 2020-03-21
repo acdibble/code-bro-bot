@@ -1,7 +1,7 @@
 import { IncomingMessage } from 'http';
 
 export default class RequestError extends Error {
-  statusCode: number | undefined
+  statusCode: number | undefined;
 
   constructor(response: IncomingMessage, message: string) {
     super(message);
