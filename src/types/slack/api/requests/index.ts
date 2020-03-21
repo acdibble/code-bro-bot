@@ -10,7 +10,7 @@ export interface PostMessageOptions {
 export type RequestBody = PostMessageOptions;
 
 export interface RequestOptions<T = undefined> {
-  httpMethod: 'GET' | 'POST';
+  httpMethod: 'POST';
   params?: T extends RequestBody ? RequestBody : undefined;
 }
 
