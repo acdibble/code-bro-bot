@@ -16,7 +16,7 @@ export default (lines: string[]): Slack.Block[] => {
 
   // eslint-disable-next-line no-restricted-syntax
   for (const line of lines) {
-    if (length + line.length > 3000) {
+    if (length + line.length > 2900) {
       pointer += 1;
       length = line.length;
       blockTexts.push([line]);
