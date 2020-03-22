@@ -22,6 +22,7 @@ server.use(
 server.use(
   '/events',
   respondToChallenge,
+  verifySignature,
   events,
 );
 
