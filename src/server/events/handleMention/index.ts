@@ -8,18 +8,17 @@ export default async (
   { event: { text, channel, user } }: Slack.Payloads.Event,
 ): Promise<Slack.Responses.PostMessage> => {
   const trimmed = text.trim();
-  let message: Slack.Requests.PostMessage = { channel, text: "I don't know what to do with my hands" };
+  const message: {channel: string; text?: string; blocks?: Slack.Block[]} = { channel };
 
   if (trimmed === `<@${await getMe()}>`) {
-    message = { channel, text: `<@${user}>?` };
-  } if (trimmed.includes('coronavirus update')) {
+    message.text = `<@${user}>?`;
+  } else if (trimmed.includes('coronavirus update')) {
     const [summary, data] = await getCoronavirusUpdate();
-    message = {
-      channel,
-      blocks: splitIntoBlocks(data),
-    };
+    message.blocks = splitIntoBlocks(data);
     await postMessage({ channel, text: summary });
+  } else if (trimmed.includes('your source code')) {
+    message.text = 'https://github.com/acdibble/code-bro-bot';
   }
 
-  return postMessage(message);
+  return postMessage(message as Slack.Requests.PostMessage);
 };
