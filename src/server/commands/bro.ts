@@ -4,7 +4,7 @@ import postMessage from '../../messages/postMessage';
 
 const isAtUser = (user: string): boolean => /<@[A-Z\d]+\|[\w.\d]+>/.test(user);
 
-export default async (body: Slack.CommandRequest): Promise<void> => {
+export default async (body: Slack.Payloads.Command): Promise<void> => {
   const {
     text,
     channel_name: channelName,
@@ -19,6 +19,6 @@ export default async (body: Slack.CommandRequest): Promise<void> => {
   } else if (!user || !isAtUser(user)) {
     await respond(responseUrl, { text: 'bro you need to @someone bro', response_type: 'ephemeral' });
   } else {
-    await postMessage(channelId, `${user}, bro...`);
+    await postMessage({ channel: channelId, text: `${user}, bro...` });
   }
 };

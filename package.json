@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon --watch src --ext ts --exec ts-node src/index.ts",
-    "test": "nyc --reporter=text mocha -r ts-node/register/transpile-only --recursive **/*.test.ts",
+    "test": "nyc --reporter=text mocha -r ts-node/register --recursive **/*.test.ts",
     "lint": "eslint ./**/*.ts --fix",
     "build": "rm -rf dist && tsc"
   },

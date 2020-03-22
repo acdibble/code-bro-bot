@@ -1,39 +1,33 @@
+/* eslint-disable max-len */
 import { Slack, CodeBro } from '../../types';
 import request from '../request';
-import HTTPError, { STATUS_CODES } from '../../HTTPError';
 
 const BASE_URL = 'https://slack.com/api';
 
-/* eslint-disable max-len */
-async function slackRequest(slackMethod: Slack.Method.PostMessage, options: Required<Slack.RequestOptions<Slack.PostMessageOptions>>): Promise<any>;
-async function slackRequest(slackMethod: Slack.Method, { params, httpMethod }: Slack.RequestOptions<Slack.RequestBody | undefined>): Promise<any> {
+async function slackRequest(slackMethod: Slack.Method.AuthTest): Promise<Slack.Responses.AuthTest>;
+async function slackRequest(slackMethod: Slack.Method.PostMessage, params: Slack.Requests.PostMessage): Promise<Slack.Responses.PostMessage>;
+async function slackRequest(slackMethod: Slack.Method, params?: Slack.Request): Promise<Slack.Response> {
   const url = `${BASE_URL}/${slackMethod}`;
 
   const opts: CodeBro.ExtendedOptions = {
-    method: httpMethod,
-    data: JSON.stringify(params),
+    method: 'POST',
     headers: {
       'content-type': 'application/json;charset=utf8',
       authorization: `Bearer ${process.env.SLACK_OAUTH_TOKEN}`,
     },
   };
 
-  const res = await request(url, opts);
+  if (params) {
+    opts.data = JSON.stringify(params);
+  }
 
-  return new Promise((resolve, reject) => {
-    let body = Buffer.alloc(0);
-    res.on('error', reject)
-      .on('data', (chunk) => { body = Buffer.concat([body, chunk]); })
-      .on('end', () => {
-        /* eslint-disable @typescript-eslint/no-non-null-assertion */
-        if (res.statusCode! < 200 || res.statusCode! >= 300) {
-          reject(new HTTPError(res.statusCode as keyof typeof STATUS_CODES, body.toString()));
-        /* eslint-disable @typescript-eslint/no-non-null-assertion */
-        } else {
-          resolve(JSON.parse(body.toString()));
-        }
-      });
-  });
+  const res: Slack.Response = await request(url, opts);
+
+  if (!res.ok) {
+    throw new Error(res.error);
+  }
+
+  return res;
 }
 
 export default slackRequest;

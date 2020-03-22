@@ -1,10 +1,6 @@
-import { Request } from 'express';
-import { CommandRequest } from './CommandRequest';
+import Payload from './Payloads';
 
-type Payload = CommandRequest;
-
-export interface IncomingRequest<T extends Payload> extends Request {
+// eslint-disable-next-line no-undef
+export default interface IncomingRequest<T extends Payload> {
   body: T;
 }
-
-export { CommandRequest };

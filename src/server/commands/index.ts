@@ -4,7 +4,7 @@ import bro from './bro';
 import help from './help';
 
 export default Router()
-  .post('/', async (req: Slack.IncomingRequest<Slack.CommandRequest>, res) => {
+  .post('/', async (req: Slack.IncomingRequest<Slack.Payloads.Command>, res) => {
     res.end();
     const { text } = req.body;
     const command = text.match(/^\w+/)?.[0].toLowerCase();

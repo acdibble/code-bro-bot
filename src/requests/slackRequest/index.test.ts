@@ -19,14 +19,11 @@ describe('slackRequest', () => {
   });
 
   it('handles errors', async () => {
-    const scope = nock('https://slack.com/api')
+    nock('https://slack.com/api')
       .post('/chat.postMessage')
       .reply(500, 'whoops');
 
-    const response = slackRequest(Slack.Method.PostMessage, {
-      httpMethod: 'POST',
-      params: { text: 'test', channel: 'test' },
-    });
+    const response = slackRequest(Slack.Method.PostMessage, { text: 'test', channel: 'test' });
 
     await assert.isRejected(response, HTTPError, 'whoops');
   });

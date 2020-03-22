@@ -1,5 +1,5 @@
-export default interface PostMessageResponse {
-  ok: boolean;
+export default interface PostMessage {
+  ok: true;
   channel: string;
   ts: string;
   message: {

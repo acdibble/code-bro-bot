@@ -8,6 +8,8 @@ import chaiHTTP = require('chai-http');
 
 chai.use(chaiHTTP);
 
+const coerce = <T>(obj: any) => obj as T;
+
 const authHeaders = (body: Record<string, any>, otherHeaders?: Record<string, string>): Record<string, string> => {
   const headers: Record<string, string> = {
     ...otherHeaders,
@@ -57,10 +59,10 @@ describe('Server', () => {
 
     ['', 'help'].forEach((commandText) => {
       it(`handles help request (${commandText})`, async () => {
-        const body: Slack.CommandRequest = {
+        const body = coerce<Slack.Payloads.Command>({
           text: commandText,
           response_url: responseUrl,
-        };
+        });
 
         const text = ['Available commands:', ...Object.values(CodeBro.Command)].join('\n');
         const scope = nock(responseUrl)
@@ -79,11 +81,11 @@ describe('Server', () => {
 
     ['bro', 'Bro', 'BRO'].forEach((text) => {
       it(`sends ephemeral response if in direct message (${text})`, async () => {
-        const body: Slack.CommandRequest = {
+        const body = coerce<Slack.Payloads.Command>({
           text,
           response_url: responseUrl,
           channel_name: 'directmessage',
-        };
+        });
 
         const scope = nock(responseUrl)
           .post('/', { text: "bro you can't do that here bro", response_type: 'ephemeral' })
@@ -99,10 +101,10 @@ describe('Server', () => {
     });
 
     it('sends ephemeral response if no user given', async () => {
-      const body: Slack.CommandRequest = {
+      const body = coerce<Slack.Payloads.Command>({
         text: 'bro',
         response_url: responseUrl,
-      };
+      });
 
       const scope = nock(responseUrl)
         .post('/', { text: 'bro you need to @someone bro', response_type: 'ephemeral' })
@@ -119,11 +121,11 @@ describe('Server', () => {
     it('sends bro message to invocation channel with user passed in', async () => {
       const user = '<@ABCDEF|test>';
       const channelId = 'Q1W2E3R4';
-      const body: Slack.CommandRequest = {
+      const body = coerce<Slack.Payloads.Command>({
         text: `bro ${user}`,
         response_url: responseUrl,
         channel_id: channelId,
-      };
+      });
 
       const scope = nock('https://slack.com/api')
         .post('/chat.postMessage', { text: `${user}, bro...`, channel: channelId })

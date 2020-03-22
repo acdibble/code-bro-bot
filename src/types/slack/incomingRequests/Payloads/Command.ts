@@ -1,6 +1,6 @@
-import { CodeBro } from '../..';
+import { CodeBro } from '../../..';
 
-export interface CommandRequest {
+export default interface Command {
   token: string;
   team_id: string;
   team_domain: string;

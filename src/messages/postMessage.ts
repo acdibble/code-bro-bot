@@ -1,10 +1,8 @@
 import slackRequest from '../requests/slackRequest';
 import { Slack } from '../types';
 
-export default (channelId: string, text: string): Promise<{ ok: boolean }> => slackRequest(Slack.Method.PostMessage, {
-  httpMethod: 'POST',
-  params: {
-    channel: channelId,
-    text,
-  },
-});
+type PostMessage = (message: Slack.Requests.PostMessage) => Promise<Slack.Responses.PostMessage>;
+
+const postMessage: PostMessage = (message) => slackRequest(Slack.Method.PostMessage, message);
+
+export default postMessage;
