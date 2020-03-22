@@ -1,9 +1,12 @@
+import splitIntoBlocks from './splitIntoBlocks';
+import { Slack } from '../../../../types';
+
 const parseDate = (date: string): string => {
   const dateObj = new Date(date);
   return `${(dateObj.getMonth() + 1)}/${dateObj.getDate()}`;
 };
 
-export default (csv: string): [string, string] => {
+export default (csv: string): [string, Slack.Block[]] => {
   const [, ...data] = csv.trim().split('\n');
   const [[cases, deaths, recovered], pertinentData] = data
     .reduce(([[c, d, r], lines]: [[number, number, number], string[][]], line) => {
@@ -33,16 +36,17 @@ export default (csv: string): [string, string] => {
     });
   });
 
-  return [
-    [
-      `Total cases: ${cases}`,
-      `Total deaths: ${deaths}`,
-      `Total recovered: ${recovered}`,
-    ].join('\n'),
-    [
-      columns.map((c, i) => c.padEnd(columnWidths[i], ' ')).join('|').trim(),
-      '-'.repeat(columnWidths.reduce((a, b) => a + b) + columnWidths.length - 1),
-      ...pertinentData.map((line) => line.map((value, i) => value.padEnd(columnWidths[i], ' ')).join('|').trim()),
-    ].join('\n'),
-  ];
+  const summary = [
+    `Total cases: ${cases}`,
+    `Total deaths: ${deaths}`,
+    `Total recovered: ${recovered}`,
+  ].join('\n');
+
+  const blocks = splitIntoBlocks([
+    columns.map((c, i) => c.padEnd(columnWidths[i], ' ')).join('|').trim(),
+    '-'.repeat(columnWidths.reduce((a, b) => a + b) + columnWidths.length - 1),
+    ...pertinentData.map((line) => line.map((value, i) => value.padEnd(columnWidths[i], ' ')).join('|').trim()),
+  ]);
+
+  return [summary, blocks];
 };

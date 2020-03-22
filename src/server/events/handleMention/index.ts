@@ -2,7 +2,6 @@ import { Slack } from '../../../types';
 import postMessage from '../../../messages/postMessage';
 import getCoronavirusUpdate from './getCoronavirusUpdate';
 import getMe from '../../../meta/getMe';
-import splitIntoBlocks from './getCoronavirusUpdate/splitIntoBlocks';
 
 export default async (
   {
@@ -18,9 +17,9 @@ export default async (
   const message: {channel: string; text?: string; blocks?: Slack.Block[]} = { channel };
 
   if (trimmed.includes('coronavirus update')) {
-    const [summary, data] = await getCoronavirusUpdate();
-    if (data) {
-      message.blocks = splitIntoBlocks(data);
+    const [summary, blocks] = await getCoronavirusUpdate();
+    if (blocks) {
+      message.blocks = blocks;
       await postMessage({ channel, text: summary });
     } else {
       message.text = summary;

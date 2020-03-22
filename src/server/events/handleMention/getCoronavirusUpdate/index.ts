@@ -1,6 +1,7 @@
 import request from '../../../../requests/request';
 import HTTPError from '../../../../HTTPError';
 import parseCSV from './parseCSV';
+import { Slack } from '../../../../types';
 
 const padNumber = (number: number): string => String(number).padStart(2, '0');
 
@@ -13,7 +14,7 @@ const getUrl = (date: string): string => (
   `https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/${date}.csv`
 );
 
-const internalLoop = async (daysBack: number): Promise<[string, string?]> => {
+const internalLoop = async (daysBack: number): Promise<[string, Slack.Block[]?]> => {
   const date = formatDate(new Date(Date.now() - daysBack * 24 * 60 * 60 * 1000));
 
   try {
@@ -30,6 +31,6 @@ const internalLoop = async (daysBack: number): Promise<[string, string?]> => {
   }
 };
 
-const getCoronaVirusUpdate = async (): Promise<[string, string?]> => internalLoop(0);
+const getCoronaVirusUpdate = async (): Promise<[string, Slack.Block[]?]> => internalLoop(0);
 
 export default getCoronaVirusUpdate;
