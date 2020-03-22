@@ -5,12 +5,10 @@ import handleMention from './handleMention';
 export default Router()
   .post('/', async (req: Slack.IncomingRequest<Slack.Payloads.Event>, res) => {
     res.end();
+    // eslint-disable-next-line default-case
     switch (req.body.event.type) {
       case Slack.Event.AppMention:
         await handleMention(req.body);
         break;
-      default:
-        console.error(`Why am I not handling ${req.body.event.type}?`);
     }
-    res.end();
   });

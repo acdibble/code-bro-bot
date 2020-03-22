@@ -27,4 +27,14 @@ describe('slackRequest', () => {
 
     await assert.isRejected(response, HTTPError, 'whoops');
   });
+
+  it('rejects responses without ok=true in the body', async () => {
+    nock('https://slack.com/api')
+      .post('/chat.postMessage')
+      .reply(200, { ok: false });
+
+    const response = slackRequest(Slack.Method.PostMessage, { text: 'test', channel: 'test' });
+
+    await assert.isRejected(response, Error);
+  });
 });

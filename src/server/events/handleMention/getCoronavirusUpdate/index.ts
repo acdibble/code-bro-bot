@@ -13,22 +13,23 @@ const getUrl = (date: string): string => (
   `https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/${date}.csv`
 );
 
-const getCoronaVirusUpdate = async (daysBack = 0): Promise<[string, string]> => {
-  if (daysBack === 10) return ['Could not find any data within past 10 days.', ''];
-
+const internalLoop = async (daysBack: number): Promise<[string, string?]> => {
   const date = formatDate(new Date(Date.now() - daysBack * 24 * 60 * 60 * 1000));
-  const url = getUrl(date);
 
   try {
-    const response: string = await request(url, { method: 'GET' });
+    const response: string = await request(getUrl(date), { method: 'GET' });
     return parseCSV(response);
   } catch (e) {
+    if (daysBack === 10) return ["I couldn't find any data within the past 10 days."];
+
     if (e instanceof HTTPError && e.statusCode === 404) {
-      return getCoronaVirusUpdate(daysBack + 1);
+      return internalLoop(daysBack + 1);
     }
 
-    throw e;
+    return ['I encountered an error retrieving the data :('];
   }
 };
+
+const getCoronaVirusUpdate = async (): Promise<[string, string?]> => internalLoop(0);
 
 export default getCoronaVirusUpdate;

@@ -19,8 +19,12 @@ export default async (
 
   if (trimmed.includes('coronavirus update')) {
     const [summary, data] = await getCoronavirusUpdate();
-    message.blocks = splitIntoBlocks(data);
-    await postMessage({ channel, text: summary });
+    if (data) {
+      message.blocks = splitIntoBlocks(data);
+      await postMessage({ channel, text: summary });
+    } else {
+      message.text = summary;
+    }
   } else if (trimmed.includes('your source code')) {
     message.text = 'https://github.com/acdibble/code-bro-bot';
   } else if (trimmed.startsWith('<') && trimmed.endsWith('>') && trimmed === `<@${await getMe(team)}>`) {
