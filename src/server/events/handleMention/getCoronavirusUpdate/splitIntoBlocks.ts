@@ -1,10 +1,10 @@
 import { Slack } from '../../../../types';
 
-const createBlock = (text: string): Slack.Block => ({
+export const createBlock = (text: string, type: 'mrkdwn' | 'plain_text'): Slack.Block => ({
   type: 'section',
   text: {
-    type: 'mrkdwn',
-    text: `\`\`\`${text}\`\`\``,
+    type,
+    text: type === 'mrkdwn' ? `\`\`\`${text}\`\`\`` : text,
   },
 });
 
@@ -26,5 +26,5 @@ export default (lines: string[]): Slack.Block[] => {
     }
   }
 
-  return blockTexts.map((text) => createBlock(text.join('\n')));
+  return blockTexts.map((text) => createBlock(text.join('\n'), 'mrkdwn'));
 };

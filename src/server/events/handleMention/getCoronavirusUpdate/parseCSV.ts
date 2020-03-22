@@ -1,4 +1,4 @@
-import splitIntoBlocks from './splitIntoBlocks';
+import splitIntoBlocks, { createBlock } from './splitIntoBlocks';
 import { Slack } from '../../../../types';
 
 const parseDate = (date: string): string => {
@@ -6,7 +6,7 @@ const parseDate = (date: string): string => {
   return `${(dateObj.getMonth() + 1)}/${dateObj.getDate()}`;
 };
 
-export default (csv: string): [string, Slack.Block[]] => {
+export default (csv: string): Slack.Block[] => {
   const [, ...data] = csv.trim().split('\n');
   const [[cases, deaths, recovered], pertinentData] = data
     .reduce(([[c, d, r], lines]: [[number, number, number], string[][]], line) => {
@@ -48,5 +48,5 @@ export default (csv: string): [string, Slack.Block[]] => {
     ...pertinentData.map((line) => line.map((value, i) => value.padEnd(columnWidths[i], ' ')).join('|').trim()),
   ]);
 
-  return [summary, blocks];
+  return [createBlock(summary, 'plain_text'), ...blocks];
 };

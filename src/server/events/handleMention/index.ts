@@ -17,13 +17,7 @@ export default async (
   const message: {channel: string; text?: string; blocks?: Slack.Block[]} = { channel };
 
   if (trimmed.includes('coronavirus update')) {
-    const [summary, blocks] = await getCoronavirusUpdate();
-    if (blocks) {
-      message.blocks = blocks;
-      await postMessage({ channel, text: summary });
-    } else {
-      message.text = summary;
-    }
+    message.blocks = await getCoronavirusUpdate();
   } else if (trimmed.includes('your source code')) {
     message.text = 'https://github.com/acdibble/code-bro-bot';
   } else if (trimmed.startsWith('<') && trimmed.endsWith('>') && trimmed === `<@${await getMe(team)}>`) {

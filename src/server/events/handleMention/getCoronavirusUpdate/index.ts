@@ -2,6 +2,7 @@ import request from '../../../../requests/request';
 import HTTPError from '../../../../HTTPError';
 import parseCSV from './parseCSV';
 import { Slack } from '../../../../types';
+import { createBlock } from './splitIntoBlocks';
 
 const padNumber = (number: number): string => String(number).padStart(2, '0');
 
@@ -14,23 +15,23 @@ const getUrl = (date: string): string => (
   `https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/${date}.csv`
 );
 
-const internalLoop = async (daysBack: number): Promise<[string, Slack.Block[]?]> => {
+const internalLoop = async (daysBack: number): Promise<Slack.Block[]> => {
   const date = formatDate(new Date(Date.now() - daysBack * 24 * 60 * 60 * 1000));
 
   try {
     const response: string = await request(getUrl(date), { method: 'GET' });
     return parseCSV(response);
   } catch (e) {
-    if (daysBack === 10) return ["I couldn't find any data within the past 10 days."];
+    if (daysBack === 10) return [createBlock("I couldn't find any data within the past 10 days.", 'plain_text')];
 
     if (e instanceof HTTPError && e.statusCode === 404) {
       return internalLoop(daysBack + 1);
     }
 
-    return ['I encountered an error retrieving the data :('];
+    return [createBlock('I encountered an error retrieving the data :(', 'plain_text')];
   }
 };
 
-const getCoronaVirusUpdate = async (): Promise<[string, Slack.Block[]?]> => internalLoop(0);
+const getCoronaVirusUpdate = async (): Promise<Slack.Block[]> => internalLoop(0);
 
 export default getCoronaVirusUpdate;

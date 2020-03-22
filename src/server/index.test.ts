@@ -264,12 +264,14 @@ describe('Server', () => {
           const slackScope = nock('https://slack.com/api')
             .post('/chat.postMessage', {
               channel,
-              text: 'Total cases: 25493\nTotal deaths: 307\nTotal recovered: 171',
-            })
-            .reply(200, { ok: true })
-            .post('/chat.postMessage', {
-              channel,
               blocks: [
+                {
+                  type: 'section',
+                  text: {
+                    type: 'plain_text',
+                    text: 'Total cases: 25493\nTotal deaths: 307\nTotal recovered: 171',
+                  },
+                },
                 {
                   type: 'section',
                   text: {
@@ -314,12 +316,14 @@ describe('Server', () => {
           const slackScope = nock('https://slack.com/api')
             .post('/chat.postMessage', {
               channel,
-              text: 'Total cases: 11710\nTotal deaths: 60\nTotal recovered: 0',
-            })
-            .reply(200, { ok: true })
-            .post('/chat.postMessage', {
-              channel,
               blocks: [
+                {
+                  type: 'section',
+                  text: {
+                    type: 'plain_text',
+                    text: 'Total cases: 11710\nTotal deaths: 60\nTotal recovered: 0',
+                  },
+                },
                 {
                   type: 'section',
                   text: {
@@ -341,7 +345,6 @@ describe('Server', () => {
           slackScope.done();
           githubScope.done();
         });
-        /* eslint-enable max-len */
 
         it('returns an error from coronavirus update', async () => {
           const body = {
@@ -359,7 +362,15 @@ describe('Server', () => {
           const slackScope = nock('https://slack.com/api')
             .post('/chat.postMessage', {
               channel,
-              text: 'I encountered an error retrieving the data :(',
+              blocks: [
+                {
+                  type: 'section',
+                  text: {
+                    type: 'plain_text',
+                    text: 'I encountered an error retrieving the data :(',
+                  },
+                },
+              ],
             })
             .reply(200, { ok: true });
 

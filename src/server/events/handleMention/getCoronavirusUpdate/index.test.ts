@@ -33,9 +33,15 @@ describe('getCoronaVirusUpdate', () => {
         .reply(404);
     }
 
-    const [summary, data] = await getCoronaVirusUpdate();
+    const blocks = await getCoronaVirusUpdate();
     scope.done();
-    assert.isUndefined(data);
-    assert.equal(summary, "I couldn't find any data within the past 10 days.");
+    assert.lengthOf(blocks, 1);
+    assert.deepEqual(blocks[0], {
+      type: 'section',
+      text: {
+        text: "I couldn't find any data within the past 10 days.",
+        type: 'plain_text',
+      },
+    });
   });
 });
