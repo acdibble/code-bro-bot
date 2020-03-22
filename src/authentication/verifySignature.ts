@@ -1,4 +1,4 @@
-import { createHmac } from 'crypto';
+import { createHmac, timingSafeEqual } from 'crypto';
 import { NextFunction, Request, Response } from 'express';
 import bufferStore from './bufferStore';
 import HTTPError from '../HTTPError';
@@ -20,7 +20,9 @@ export default (req: Request, response: Response, next: NextFunction): void => {
   const stringToSign = `v0:${timestamp}:${body}`;
   const digest = createHmac('sha256', process.env.SLACK_SIGNING_SECRET as string).update(stringToSign).digest('hex');
 
-  if (signature !== `v0=${digest}`) {
+  try {
+    timingSafeEqual(Buffer.from(`v0=${digest}`, 'utf8'), Buffer.from(signature as string, 'utf8'));
+  } catch {
     return next(new HTTPError(401));
   }
 
