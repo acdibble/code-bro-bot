@@ -2,8 +2,10 @@ import request from '../../../../requests/request';
 import HTTPError from '../../../../HTTPError';
 import parseCSV from './parseCSV';
 
+const padNumber = (number: number): string => String(number).padStart(2, '0');
+
 const formatDate = (date: Date): string => (
-  `${String(date.getMonth() + 1).padStart(2, '0')}-${date.getDate()}-${date.getFullYear()}`
+  `${padNumber(date.getMonth() + 1)}-${padNumber(date.getDate())}-${date.getFullYear()}`
 );
 
 const getUrl = (date: string): string => (

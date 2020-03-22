@@ -13,7 +13,7 @@ export default (req: Request, response: Response, next: NextFunction): void => {
     return next(new HTTPError(401));
   }
 
-  if (timestamp * 1000 - Date.now() > 5 * 60 * 1000) {
+  if (Date.now() - timestamp * 1000 > 5 * 60 * 1000) {
     return next(new HTTPError(401));
   }
 

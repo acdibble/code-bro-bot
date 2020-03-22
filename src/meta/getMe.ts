@@ -1,10 +1,11 @@
 import slackRequest from '../requests/slackRequest';
 import { Slack } from '../types';
 
-let me: string;
+export const teamIdToUserIdMap: Record<string, string> = {};
 
-export default async (): Promise<string> => {
-  if (me) return me;
-  ({ user_id: me } = await slackRequest(Slack.Method.AuthTest));
-  return me;
+export default async (team: string): Promise<string> => {
+  if (teamIdToUserIdMap[team]) return teamIdToUserIdMap[team];
+  const { user_id: me } = await slackRequest(Slack.Method.AuthTest);
+  teamIdToUserIdMap[team] = me;
+  return teamIdToUserIdMap[team];
 };
