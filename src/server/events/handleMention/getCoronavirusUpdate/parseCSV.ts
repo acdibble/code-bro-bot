@@ -48,5 +48,6 @@ export default (csv: string): Slack.Block[] => {
     ...pertinentData.map((line) => line.map((value, i) => value.padEnd(columnWidths[i], ' ')).join('|').trim()),
   ]);
 
-  return [createBlock(summary, 'plain_text'), ...blocks];
+  blocks.unshift(createBlock(summary, 'plain_text'));
+  return blocks;
 };
