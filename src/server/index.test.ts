@@ -5,13 +5,13 @@ import * as path from 'path';
 import server from '.';
 import { Slack, CodeBro } from '../types';
 import { teamIdToUserIdMap } from '../meta/getMe';
+import Queue from '../Queue';
 
 import chaiHTTP = require('chai-http');
 
 chai.use(chaiHTTP);
 
 const coerce = <T>(obj: any): T => obj as T;
-const tick = (ms = 100): Promise<void> => new Promise((resolve) => { setTimeout(resolve, ms); });
 
 const authHeaders = (body: Record<string, any>, otherHeaders?: Record<string, string>): Record<string, string> => {
   const timestamp = Math.floor(Date.now() / 1000);
@@ -30,6 +30,12 @@ const authHeaders = (body: Record<string, any>, otherHeaders?: Record<string, st
 };
 
 describe('Server', () => {
+  let queue: Queue;
+
+  before(async () => {
+    queue = (await import('./events')).queue;
+  });
+
   it('pongs', async () => {
     const res = await chai.request(server)
       .get('/ping');
@@ -160,6 +166,31 @@ describe('Server', () => {
         assert.deepEqual(res.body, { challenge: 'abcdef' });
       });
 
+      it('handles errors', async () => {
+        const body = {
+          event: {
+            channel,
+            team,
+            type: 'app_mention',
+            user: 'Q1W2E3R4',
+            text: `<@${codeBro}> wassup`,
+          },
+        };
+
+        const scope = nock('https://slack.com/api')
+          .post('/chat.postMessage', { channel, text: "I don't know what to do with my hands" })
+          .reply(500, { ok: false });
+
+        const res = await chai.request(server)
+          .post('/events')
+          .set(authHeaders(body))
+          .send(body);
+
+        assert.equal(res.status, 200);
+        await queue.ready();
+        scope.done();
+      });
+
       describe('app_mention', () => {
         beforeEach(() => {
           nock.cleanAll();
@@ -187,7 +218,7 @@ describe('Server', () => {
             .send(body);
 
           assert.equal(res.status, 200);
-          await tick();
+          await queue.ready();
           scope.done();
         });
 
@@ -215,7 +246,7 @@ describe('Server', () => {
             .send(body);
 
           assert.equal(res.status, 200);
-          await tick();
+          await queue.ready();
           scope.done();
         });
 
@@ -296,7 +327,7 @@ describe('Server', () => {
             .send(body);
 
           assert.equal(res.status, 200);
-          await tick();
+          await queue.ready();
           slackScope.done();
           githubScope.done();
         });
@@ -335,7 +366,7 @@ describe('Server', () => {
             .send(body);
 
           assert.equal(res.status, 200);
-          await tick();
+          await queue.ready();
           slackScope.done();
           githubScope.done();
         });

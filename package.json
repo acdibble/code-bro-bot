@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon --watch src --ext ts --exec ts-node src/index.ts",
-    "test": "nyc --reporter=text mocha -r ts-node/register --recursive **/*.test.ts",
+    "test": "nyc --reporter=text mocha -r ts-node/register --recursive \"./**/*.test.ts\"",
     "lint": "eslint ./**/*.ts --fix",
     "build": "rm -rf dist && tsc"
   },
@@ -48,7 +48,7 @@
     "nyc": "^15.0.0",
     "sinon": "^9.0.1",
     "ts-node": "^8.6.2",
-    "typescript": "^3.7.5"
+    "typescript": "^3.8.3"
   },
   "dependencies": {
     "dotenv": "^8.2.0",

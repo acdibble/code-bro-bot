@@ -66,6 +66,7 @@
                     "src/**/*.test.ts"
                 ]
             }
-        ]
+        ],
+        "no-restricted-syntax": "off"
     }
 }
