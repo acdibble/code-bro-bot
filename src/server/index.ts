@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import express from 'express';
 import commands from './commands';
 import verifySignature from '../authentication/verifySignature';
