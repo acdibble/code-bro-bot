@@ -67,6 +67,10 @@ describe('Server', () => {
     });
 
     describe('commands', () => {
+      beforeEach(() => {
+        nock.cleanAll();
+      });
+
       const responseUrl = 'https://dibble.codes/test/thing/';
       ['', 'help'].forEach((commandText) => {
         it(`handles help request (${commandText})`, async () => {
@@ -154,6 +158,10 @@ describe('Server', () => {
     });
 
     describe('events', () => {
+      beforeEach(() => {
+        nock.cleanAll();
+      });
+
       const codeBro = 'C0D3BR0';
       const channel = 'ABCDEF';
       const team = 'TESTTEAM';
