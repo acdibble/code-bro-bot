@@ -22,6 +22,8 @@ export default async (
     message.text = 'https://github.com/acdibble/code-bro-bot';
   } else if (trimmed.startsWith('<') && trimmed.endsWith('>') && trimmed === `<@${await getMe(team)}>`) {
     message.text = `<@${user}>?`;
+  } else if (trimmed.replace(`<@${await getMe(team)}>`, '').trim().toLowerCase() === 'ping') {
+    message.text = 'pong';
   } else {
     message.text = "I don't know what to do with my hands";
   }

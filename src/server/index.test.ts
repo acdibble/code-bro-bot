@@ -158,13 +158,14 @@ describe('Server', () => {
     });
 
     describe('events', () => {
-      beforeEach(() => {
-        nock.cleanAll();
-      });
-
       const codeBro = 'C0D3BR0';
       const channel = 'ABCDEF';
       const team = 'TESTTEAM';
+
+      beforeEach(() => {
+        nock.cleanAll();
+        teamIdToUserIdMap[team] = codeBro;
+      });
 
       it('handles challenges', async () => {
         const res = await chai.request(server)
@@ -203,6 +204,31 @@ describe('Server', () => {
         beforeEach(() => {
           nock.cleanAll();
           teamIdToUserIdMap[team] = codeBro;
+        });
+
+        it('pongs', async () => {
+          const body = {
+            event: {
+              channel,
+              team,
+              type: 'app_mention',
+              user: 'Q1W2E3R4',
+              text: `<@${codeBro}> ping`,
+            },
+          };
+
+          const scope = nock('https://slack.com/api')
+            .post('/chat.postMessage', { channel, text: 'pong' })
+            .reply(200, { ok: true });
+
+          const res = await chai.request(server)
+            .post('/events')
+            .set(authHeaders(body))
+            .send(body);
+
+          assert.equal(res.status, 200);
+          await events.ready();
+          scope.done();
         });
 
         it('handles unrecognized events', async () => {
