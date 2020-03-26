@@ -30,10 +30,10 @@ const authHeaders = (body: Record<string, any>, otherHeaders?: Record<string, st
 };
 
 describe('Server', () => {
-  let queue: Queue;
+  let events: Queue;
 
   before(async () => {
-    queue = (await import('./events')).queue;
+    ({ events } = await import('./events'));
   });
 
   it('pongs', async () => {
@@ -195,7 +195,7 @@ describe('Server', () => {
           .send(body);
 
         assert.equal(res.status, 200);
-        await queue.ready();
+        await events.ready();
         scope.done();
       });
 
@@ -226,7 +226,7 @@ describe('Server', () => {
             .send(body);
 
           assert.equal(res.status, 200);
-          await queue.ready();
+          await events.ready();
           scope.done();
         });
 
@@ -254,7 +254,7 @@ describe('Server', () => {
             .send(body);
 
           assert.equal(res.status, 200);
-          await queue.ready();
+          await events.ready();
           scope.done();
         });
 
@@ -335,7 +335,7 @@ describe('Server', () => {
             .send(body);
 
           assert.equal(res.status, 200);
-          await queue.ready();
+          await events.ready();
           slackScope.done();
           githubScope.done();
         });
@@ -374,7 +374,7 @@ describe('Server', () => {
             .send(body);
 
           assert.equal(res.status, 200);
-          await queue.ready();
+          await events.ready();
           slackScope.done();
           githubScope.done();
         });

@@ -8,11 +8,11 @@ export interface Event {
   requestBody: Slack.Payloads.Event;
 }
 
-export const queue = new Queue<Event>();
+export const events = new Queue<Event>();
 
 export default Router()
   .post('/', async (req: Slack.IncomingRequest<Slack.Payloads.Event>, res) => {
-    queue.enqueue({ type: req.body.event.type, requestBody: req.body });
+    events.enqueue({ type: req.body.event.type, requestBody: req.body });
     res.end();
   });
 
@@ -21,7 +21,7 @@ export default Router()
 (async (): Promise<never> => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
-  for await (const { type, requestBody } of queue) {
+  for await (const { type, requestBody } of events) {
     try {
       switch (type) {
         case Slack.Event.AppMention:

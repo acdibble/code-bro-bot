@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import sinon from 'sinon';
-import { queue } from '.';
+import { events } from '.';
 
 describe('eventQueue', () => {
   const errorSpy = sinon.spy(console, 'error');
@@ -12,8 +12,8 @@ describe('eventQueue', () => {
   it('handles unknown events', async () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
-    queue.enqueue({ type: 'unknown', requestBody: {} });
-    await queue.ready();
+    events.enqueue({ type: 'unknown', requestBody: {} });
+    await events.ready();
     assert.isTrue(errorSpy.calledOnceWith('Received unknown event:', 'unknown'));
   });
 });
