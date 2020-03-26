@@ -268,7 +268,7 @@ describe('Server', () => {
                 {
                   type: 'section',
                   text: {
-                    type: 'plain_text',
+                    type: 'mrkdwn',
                     text: 'If the data is bad, I got it from here https://github.com/CSSEGISandData\nTotal cases: 65374\nTotal deaths: 940\nTotal recovered: 361\nTotal active: 0', // eslint-disable-line max-len
                   },
                 },

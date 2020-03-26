@@ -94,5 +94,6 @@ export default (csv: string): Slack.Block[] => {
   ]);
 
   blocks.unshift(createBlock(summary, 'plain_text'));
+  blocks[0].text.type = 'mrkdwn';
   return blocks;
 };
