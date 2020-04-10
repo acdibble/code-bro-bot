@@ -6,6 +6,7 @@ import server from '.';
 import { Slack, CodeBro } from '../types';
 import { teamIdToUserIdMap } from '../meta/getMe';
 import Queue from '../Queue';
+import getVersion from './events/handleMention/getVersion';
 
 import chaiHTTP = require('chai-http');
 
@@ -284,7 +285,32 @@ describe('Server', () => {
           scope.done();
         });
 
-        it('handles souce code requests', async () => {
+        it('handles version requests', async () => {
+          const body = {
+            event: {
+              channel,
+              team,
+              type: 'app_mention',
+              user: 'Q1W2E3R4',
+              text: `<@${codeBro}> version`,
+            },
+          };
+
+          const scope = nock('https://slack.com/api')
+            .post('/chat.postMessage', { channel, text: `I am running on version ${getVersion()}` })
+            .reply(200, { ok: true });
+
+          const res = await chai.request(server)
+            .post('/events')
+            .set(authHeaders(body))
+            .send(body);
+
+          assert.equal(res.status, 200);
+          await events.ready();
+          scope.done();
+        });
+
+        it('handles source code requests', async () => {
           const body = {
             event: {
               channel,
