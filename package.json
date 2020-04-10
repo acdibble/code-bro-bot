@@ -1,6 +1,6 @@
 {
   "name": "code-bro-bot",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "it's code, bro",
   "main": "index.js",
   "type": "module",
