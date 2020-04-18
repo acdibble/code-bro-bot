@@ -8,7 +8,6 @@ export const createBlock = (text: string, type: 'mrkdwn' | 'plain_text', wrap = 
   },
 });
 
-
 export default (lines: string[]): Slack.Block[] => {
   let pointer = 0;
   let length = 0;

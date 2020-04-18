@@ -93,7 +93,6 @@ describe('Server', () => {
         });
       });
 
-
       ['bro', 'Bro', 'BRO'].forEach((text) => {
         it(`sends ephemeral response if in direct message (${text})`, async () => {
           const body = coerce<Slack.Payloads.Command>({

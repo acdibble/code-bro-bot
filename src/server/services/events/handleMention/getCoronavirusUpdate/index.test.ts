@@ -68,7 +68,6 @@ describe('getCoronaVirusUpdate', () => {
     });
   });
 
-
   it('gets a coronavirus update', async () => {
     const githubScope = nock(BASE_URL)
       .get(getPath())
