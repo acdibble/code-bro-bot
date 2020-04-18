@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import sinon from 'sinon';
-import { events } from '.';
+import { events } from '../../services/events';
 
 describe('eventQueue', () => {
   const errorSpy = sinon.spy(console, 'error');

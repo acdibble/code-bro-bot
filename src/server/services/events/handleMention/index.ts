@@ -1,7 +1,7 @@
-import { Slack } from '../../../types';
-import postMessage from '../../../messages/postMessage';
+import { Slack } from '../../../../types';
+import postMessage from '../../../../messages/postMessage';
 import getCoronavirusUpdate from './getCoronavirusUpdate';
-import getMe from '../../../meta/getMe';
+import getMe from '../../../../meta/getMe';
 import getVersion from './getVersion';
 
 export default async (

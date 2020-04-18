@@ -1,4 +1,4 @@
-import { Slack } from '../../../../types';
+import { Slack } from '../../../../../types';
 
 export const createBlock = (text: string, type: 'mrkdwn' | 'plain_text'): Slack.Block => ({
   type: 'section',

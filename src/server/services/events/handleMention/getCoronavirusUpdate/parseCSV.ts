@@ -1,5 +1,5 @@
 import splitIntoBlocks, { createBlock } from './splitIntoBlocks';
-import { Slack } from '../../../../types';
+import { Slack } from '../../../../../types';
 
 interface CovidData {
   lastUpdate: Date;

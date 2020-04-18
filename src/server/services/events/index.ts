@@ -1,6 +1,5 @@
-import { Router } from 'express';
-import { Slack } from '../../types';
-import Queue from '../../Queue';
+import { Slack } from '../../../types';
+import Queue from '../../../Queue';
 import handleMention from './handleMention';
 
 export interface Event {
@@ -9,12 +8,6 @@ export interface Event {
 }
 
 export const events = new Queue<Event>();
-
-export default Router()
-  .post('/', async (req: Slack.IncomingRequest<Slack.Payloads.Event>, res) => {
-    events.enqueue({ type: req.body.event.type, requestBody: req.body });
-    res.end();
-  });
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
@@ -35,3 +28,5 @@ export default Router()
     }
   }
 })();
+
+export default events;

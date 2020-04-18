@@ -6,7 +6,7 @@ import server from '.';
 import { Slack, CodeBro } from '../types';
 import { teamIdToUserIdMap } from '../meta/getMe';
 import Queue from '../Queue';
-import getVersion from './events/handleMention/getVersion';
+import getVersion from './services/events/handleMention/getVersion';
 
 import chaiHTTP = require('chai-http');
 
@@ -34,7 +34,7 @@ describe('Server', () => {
   let events: Queue;
 
   before(async () => {
-    ({ events } = await import('./events'));
+    ({ events } = await import('./services/events'));
   });
 
   it('pongs', async () => {

@@ -1,5 +1,5 @@
-import respond from '../../requests/respond';
-import { CodeBro } from '../../types';
+import respond from '../../../requests/respond';
+import { CodeBro } from '../../../types';
 
 const generateText = (): string => {
   const commands = Object.values(CodeBro.Command);

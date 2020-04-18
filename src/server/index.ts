@@ -1,9 +1,9 @@
 import express from 'express';
-import commands from './commands';
+import commands from './controllers/commands';
 import verifySignature from '../authentication/verifySignature';
 import captureBuffer from '../authentication/captureBuffer';
 import respondToChallenge from '../authentication/respondToChallenge';
-import events from './events';
+import events from './controllers/events';
 
 const server = express();
 

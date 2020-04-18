@@ -1,6 +1,6 @@
-import { Slack } from '../../types';
-import respond from '../../requests/respond';
-import postMessage from '../../messages/postMessage';
+import { Slack } from '../../../types';
+import respond from '../../../requests/respond';
+import postMessage from '../../../messages/postMessage';
 
 const isAtUser = (user: string): boolean => /<@[A-Z\d]+\|[\w.\d]+>/.test(user);
 

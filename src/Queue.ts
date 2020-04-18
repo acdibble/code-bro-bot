@@ -37,7 +37,7 @@ export default class Queue<T = any> extends EventEmitter {
 
   public ready(): Promise<void> {
     return new Promise((resolve) => {
-      this.on(this.isReady, resolve);
+      this.once(this.isReady, resolve);
     });
   }
 }

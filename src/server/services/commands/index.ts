@@ -1,8 +1,7 @@
-import { Router } from 'express';
-import { Slack, CodeBro } from '../../types';
+import { Slack, CodeBro } from '../../../types';
 import bro from './bro';
 import help from './help';
-import Queue from '../../Queue';
+import Queue from '../../../Queue';
 
 interface CommandEvent {
   command: string | undefined;
@@ -10,13 +9,6 @@ interface CommandEvent {
 }
 
 const commands = new Queue<CommandEvent>();
-
-export default Router()
-  .post('/', async (req: Slack.IncomingRequest<Slack.Payloads.Command>, res) => {
-    res.end();
-    const command = req.body.text.match(/^\w+/)?.[0].toLowerCase();
-    commands.enqueue({ command, requestBody: req.body });
-  });
 
 (async () => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
@@ -32,3 +24,5 @@ export default Router()
     }
   }
 })();
+
+export default commands;

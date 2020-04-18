@@ -1,7 +1,7 @@
-import request from '../../../../requests/request';
-import HTTPError from '../../../../HTTPError';
+import request from '../../../../../requests/request';
+import HTTPError from '../../../../../HTTPError';
 import parseCSV from './parseCSV';
-import { Slack } from '../../../../types';
+import { Slack } from '../../../../../types';
 import { createBlock } from './splitIntoBlocks';
 
 const padNumber = (number: number): string => String(number).padStart(2, '0');
