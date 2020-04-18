@@ -20,10 +20,12 @@ const blankCovidData = (): CovidData => ({
 });
 
 export default (csv: string, place: string): Slack.Block[] => {
+  const re = new RegExp(`,${place},`, 'i');
+  console.log(re);
   const tabulatedData = csv.trim()
     .split('\n')
     .reduce((acc, line, i) => {
-      if (!line.endsWith(` ${place}"`) || i === 0) return acc;
+      if (!re.test(line) || i === 0) return acc;
       const [,, state,, lastUpdate,,, confirmed, deaths, recovered, active] = line.split(',');
       acc[state] = acc[state] || blankCovidData();
 
@@ -66,7 +68,6 @@ export default (csv: string, place: string): Slack.Block[] => {
     return [key, formatDate(lastUpdate), String(confirmed), String(deaths), String(recovered), String(active)];
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const totals: string[] = pertinentData.shift()!;
 
   pertinentData
