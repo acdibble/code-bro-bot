@@ -33,7 +33,7 @@ describe('getCoronaVirusUpdate', () => {
         .reply(404);
     }
 
-    const blocks = await getCoronaVirusUpdate();
+    const blocks = await getCoronaVirusUpdate('for US');
     scope.done();
     assert.lengthOf(blocks, 1);
     assert.deepEqual(blocks[0], {
