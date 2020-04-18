@@ -16,7 +16,7 @@ const getUrl = (date: string): string => (
 );
 
 const getCoronaVirusUpdate = async (mention: string): Promise<Slack.Block[]> => {
-  const { place } = mention.match(/for (?<place>\w)+/)?.groups || { place: 'US' };
+  const { place } = mention.match(/for (?<place>\w+)/)?.groups || { place: 'US' };
 
   for (let i = 0; i <= 10; i += 1) {
     const date = formatDate(new Date(Date.now() - i * 24 * 60 * 60 * 1000));
@@ -26,6 +26,7 @@ const getCoronaVirusUpdate = async (mention: string): Promise<Slack.Block[]> => 
       return parseCSV(response, place);
     } catch (e) {
       if (!(e instanceof HTTPError && e.statusCode === 404)) {
+        console.error(e);
         return [createBlock('I encountered an error retrieving the data :(', 'plain_text')];
       }
     }

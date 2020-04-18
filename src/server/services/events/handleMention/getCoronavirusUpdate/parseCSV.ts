@@ -21,7 +21,6 @@ const blankCovidData = (): CovidData => ({
 
 export default (csv: string, place: string): Slack.Block[] => {
   const re = new RegExp(`,${place},`, 'i');
-  console.log(re);
   const tabulatedData = csv.trim()
     .split('\n')
     .reduce((acc, line, i) => {
@@ -68,18 +67,8 @@ export default (csv: string, place: string): Slack.Block[] => {
     return [key, formatDate(lastUpdate), String(confirmed), String(deaths), String(recovered), String(active)];
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const totals: string[] = pertinentData.shift()!;
-
-  pertinentData
-    .sort(([,, a], [,, b]) => Number(b) - Number(a))
-    .forEach((line) => {
-      line.forEach((val, i) => {
-        if (columnWidths[i] < val.length) {
-          columnWidths[i] = val.length;
-        }
-      });
-    });
-
 
   const summary = [
     'If the data is bad, I got it from here https://github.com/CSSEGISandData',
@@ -89,13 +78,25 @@ export default (csv: string, place: string): Slack.Block[] => {
     `Total active: ${totals[5]}`,
   ].join('\n');
 
-  const blocks = splitIntoBlocks([
-    columns.map((c, i) => c.padEnd(columnWidths[i], ' ')).join('|').trim(),
-    '-'.repeat(columnWidths.reduce((a, b) => a + b) + columnWidths.length - 1),
-    ...pertinentData.map((line) => line.map((value, i) => value.padEnd(columnWidths[i], ' ')).join('|').trim()),
-  ]);
+  let blocks = [createBlock(summary, 'mrkdwn', false)];
 
-  blocks.unshift(createBlock(summary, 'plain_text'));
-  blocks[0].text.type = 'mrkdwn';
+  if (pertinentData.length > 1) {
+    pertinentData
+      .sort(([,, a], [,, b]) => Number(b) - Number(a))
+      .forEach((line) => {
+        line.forEach((val, i) => {
+          if (columnWidths[i] < val.length) {
+            columnWidths[i] = val.length;
+          }
+        });
+      });
+
+    blocks = blocks.concat(splitIntoBlocks([
+      columns.map((c, i) => c.padEnd(columnWidths[i], ' ')).join('|').trim(),
+      columnWidths.map((num) => '-'.repeat(num)).join('|'),
+      ...pertinentData.map((line) => line.map((value, i) => value.padEnd(columnWidths[i], ' ')).join('|').trimRight()),
+    ]));
+  }
+
   return blocks;
 };
