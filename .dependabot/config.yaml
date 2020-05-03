@@ -1,10 +1,10 @@
 version: 1
 
 update_configs:
-  - package_manager: 'javascript'
+  - package_manager: 'elixir:hex'
     update_schedule: 'live'
     directory: '/'
-    target_branch: 'master'
+    target_branch: 'elixir'
     allowed_updates:
       - match:
           update_type: 'all'

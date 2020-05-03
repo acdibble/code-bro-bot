@@ -1,1 +1,3 @@
-it's code, bro
+# CodeBroBot
+
+it's code bro
