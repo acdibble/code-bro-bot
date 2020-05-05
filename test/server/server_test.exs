@@ -2,6 +2,12 @@ defmodule CodeBroBot.ServerTest do
   use ExUnit.Case, async: true
   use Plug.Test
 
+  setup_all do
+    System.put_env("SLACK_SIGNING_SECRET", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+
+    on_exit(fn -> System.delete_env("SLACK_SIGNING_SECRET") end)
+  end
+
   test "pongs" do
     {status, _header, body} =
       conn(:get, "/ping")
@@ -23,10 +29,10 @@ defmodule CodeBroBot.ServerTest do
   end
 
   test "responds to challenges" do
-    challenge_map = %{"challenge" => "world", "other" => "property"}
+    body = Jason.encode!(%{"challenge" => "world", "other" => "property"})
 
     {status, _header, body} =
-      authenticated_conn(:post, "/events", Jason.encode!(challenge_map))
+      authenticated_conn(:post, "/events", body)
       |> put_req_header("content-type", "application/json")
       |> CodeBroBot.Server.call(%{})
       |> sent_resp()
@@ -37,8 +43,16 @@ defmodule CodeBroBot.ServerTest do
 
   defp authenticated_conn(method, path, params_or_body) do
     timestamp = DateTime.utc_now() |> DateTime.to_unix() |> Integer.to_string()
+    string = "v0:#{timestamp}:#{params_or_body}"
+
+    IO.inspect([:sha256, System.get_env("SLACK_SIGNING_SECRET"), string])
+
+    signature =
+      :crypto.hmac(:sha256, System.get_env("SLACK_SIGNING_SECRET"), string)
+      |> Base.encode16()
 
     conn(method, path, params_or_body)
     |> put_req_header("x-slack-request-timestamp", timestamp)
+    |> put_req_header("x-slack-signature", "v0=#{signature}")
   end
 end
