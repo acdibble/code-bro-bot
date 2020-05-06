@@ -9,7 +9,8 @@ defmodule CodeBroBot.Handlers.Supervisor do
 
   def init(:ok) do
     children = [
-      CodeBroBot.Handlers.Events
+      CodeBroBot.Handlers.Events,
+      {Task.Supervisor, name: CodeBroBot.Handlers.TaskSupervisor}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

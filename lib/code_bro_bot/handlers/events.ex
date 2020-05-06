@@ -19,6 +19,19 @@ defmodule CodeBroBot.Handlers.Events do
     conn
   end
 
+  def handle_cast(
+        %{"event" => %{"type" => "app_mention", "channel" => channel, "text" => text}},
+        nil
+      ) do
+    IO.puts("handling app mention event: #{channel} #{text}")
+
+    Task.Supervisor.start_child(CodeBroBot.Handlers.TaskSupervisor, fn ->
+      CodeBroBot.Slack.Request.call()
+    end)
+
+    {:noreply, nil}
+  end
+
   def handle_cast(map, nil) when is_map(map) do
     IO.puts("Handling new event: #{inspect(map)}")
     {:noreply, nil}
