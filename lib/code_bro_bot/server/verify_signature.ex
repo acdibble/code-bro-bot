@@ -7,7 +7,7 @@ defmodule CodeBroBot.Server.VerifySignature do
   def check_timestamp(conn, _opts) do
     conn
     |> Plug.Conn.get_req_header("x-slack-request-timestamp")
-    |> Enum.at(0, 0)
+    |> Enum.at(0, "0")
     |> String.to_integer()
     |> request_is_fresh?()
     |> pass_if_true(conn)
@@ -46,7 +46,6 @@ defmodule CodeBroBot.Server.VerifySignature do
     DateTime.utc_now()
     |> DateTime.to_unix()
     |> Kernel.-(timestamp)
-    |> IO.inspect()
     |> Kernel.<=(5 * 60)
   end
 end
