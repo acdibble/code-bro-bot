@@ -23,7 +23,7 @@ defmodule CodeBroBot.Server.VerifySignature do
 
     signed_string =
       :crypto.hmac(:sha256, System.get_env("SLACK_SIGNING_SECRET"), "v0:#{timestamp}:#{body}")
-      |> Base.encode16()
+      |> Base.encode16(case: :lower)
 
     signature = "v0=#{signed_string}"
 

@@ -76,7 +76,7 @@ defmodule CodeBroBot.ServerTest do
 
     signature =
       :crypto.hmac(:sha256, System.get_env("SLACK_SIGNING_SECRET"), string)
-      |> Base.encode16()
+      |> Base.encode16(case: :lower)
 
     conn(method, path, params_or_body)
     |> put_req_header("x-slack-request-timestamp", timestamp)
