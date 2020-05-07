@@ -31,17 +31,9 @@ defmodule CodeBroBot.Handlers.Events do
   end
 
   @impl true
-  def handle_cast(
-        %{
-          "event" => %{
-            "type" => "app_mention",
-            "channel" => channel,
-            "text" => text,
-            "user" => user
-          }
-        },
-        nil
-      ) do
+  def handle_cast(%{"event" => %{"type" => "app_mention"}} = event, nil) do
+    %{"event" => %{"channel" => channel, "text" => text, "user" => user}} = event
+
     Task.Supervisor.async_nolink(CodeBroBot.Handlers.TaskSupervisor, fn ->
       CodeBroBot.Slack.Request.call(%{
         "channel" => channel,
