@@ -50,8 +50,6 @@ defmodule CodeBroBot.Handlers.Events do
     {:noreply, nil}
   end
 
-  @version Application.spec(:code_bro_bot, :vsn)
-
   defp get_response(text, user) when is_binary(user) do
     case Regex.match?(~r/^<@[A-Z0-9].+?>$/, text) do
       true ->
@@ -66,6 +64,8 @@ defmodule CodeBroBot.Handlers.Events do
 
   defp get_response("your source"), do: "https://github.com/acdibble/code-bro-bot"
   defp get_response("ping"), do: "pong"
-  defp get_response("version"), do: "#{@version}"
+
+  defp get_response("version"), do: Application.spec(:code_bro_bot, :vsn) |> to_string()
+
   defp get_response(_), do: "I don't know what to do with my hands"
 end
