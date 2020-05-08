@@ -17,7 +17,7 @@ jobs:
         otp-version: 22
         elixir-version: 1.10.3
         install-hex: true
-        install-rebar: true
+        install-rebar: false
         
     - name: Install dependencies
       run: mix deps.get
