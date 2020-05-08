@@ -29,8 +29,11 @@ jobs:
         SLACK_SIGNING_SECRET: ${{ secrets.SLACK_SIGNING_SECRET }}
         SLACK_OAUTH_TOKEN: ${{ secrets.SLACK_OAUTH_TOKEN }}
 
+    - name: Package release
+      run: tar -czvf bot.tar.gz -C _build/prod/rel/ code_bro_bot
+
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: bot
-        path: _build/prod/rel/code_bro_bot
+        name: bot.tar.gz
+        path: bot.tar.gz
