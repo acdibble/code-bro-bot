@@ -24,3 +24,6 @@ code_bro_bot-*.tar
 
 .elixir_ls
 .env
+
+config/prod.exs
+config/dev.exs

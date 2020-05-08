@@ -2,12 +2,6 @@ defmodule CodeBroBot.ServerTest do
   use ExUnit.Case, async: true
   use Plug.Test
 
-  setup_all do
-    System.put_env("SLACK_SIGNING_SECRET", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-
-    on_exit(fn -> System.delete_env("SLACK_SIGNING_SECRET") end)
-  end
-
   test "pongs" do
     {status, _header, body} =
       conn(:get, "/ping")
@@ -75,7 +69,7 @@ defmodule CodeBroBot.ServerTest do
     string = "v0:#{timestamp}:#{params_or_body}"
 
     signature =
-      :crypto.hmac(:sha256, System.get_env("SLACK_SIGNING_SECRET"), string)
+      :crypto.hmac(:sha256, Application.get_env(:code_bro_bot, :slack_signing_secret), string)
       |> Base.encode16(case: :lower)
 
     conn(method, path, params_or_body)

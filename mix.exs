@@ -15,7 +15,7 @@ defmodule CodeBroBot.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {CodeBroBot.Application, []}
+      mod: {CodeBroBot, []}
     ]
   end
 

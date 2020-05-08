@@ -1,6 +1,8 @@
 defmodule CodeBroBot.Server.VerifySignature do
   use Plug.Builder
 
+  @signing_secret Application.get_env(:code_bro_bot, :slack_signing_secret)
+
   plug(:check_timestamp)
   plug(:check_signature)
 
@@ -22,7 +24,7 @@ defmodule CodeBroBot.Server.VerifySignature do
       |> Enum.at(0)
 
     signed_string =
-      :crypto.hmac(:sha256, signing_secret(), "v0:#{timestamp}:#{body}")
+      :crypto.hmac(:sha256, @signing_secret, "v0:#{timestamp}:#{body}")
       |> Base.encode16(case: :lower)
 
     signature = "v0=#{signed_string}"
@@ -48,6 +50,4 @@ defmodule CodeBroBot.Server.VerifySignature do
     |> Kernel.-(timestamp)
     |> Kernel.<=(5 * 60)
   end
-
-  defp signing_secret, do: Application.get_env(CodeBroBot, :slack_signing_secret)
 end
