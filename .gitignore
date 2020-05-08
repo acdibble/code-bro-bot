@@ -27,4 +27,3 @@ code_bro_bot-*.tar
 
 config/prod.exs
 config/dev.exs
-config/releases.exs
