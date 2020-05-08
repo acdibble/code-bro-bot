@@ -1,0 +1,26 @@
+name: Build bot
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Setup Elixir
+      uses: actions/setup-elixir@v1.2.0
+
+    - name: Build release
+      run: MIX_ENV=prod mix release
+
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        # Artifact name
+        name: bot
+        # A file, directory or wildcard pattern that describes what to upload
+        path: _build/prod/rel/code_bro_bot
