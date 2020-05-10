@@ -44,12 +44,6 @@ defmodule CodeBroBot.Handlers.Events do
     {:noreply, nil}
   end
 
-  @impl true
-  def handle_cast(map, nil) when is_map(map) do
-    IO.puts("Handling unknown event: #{inspect(map)}")
-    {:noreply, nil}
-  end
-
   defp get_response(text, user) when is_binary(user) do
     case Regex.match?(~r/^<@[A-Z0-9].+?>$/, text) do
       true ->
@@ -58,6 +52,7 @@ defmodule CodeBroBot.Handlers.Events do
       _ ->
         String.replace(text, ~r/<@[A-Z0-9].+?>/, "")
         |> String.trim()
+        |> String.downcase()
         |> get_response()
     end
   end
@@ -65,5 +60,14 @@ defmodule CodeBroBot.Handlers.Events do
   defp get_response("your source"), do: "https://github.com/acdibble/code-bro-bot"
   defp get_response("ping"), do: "pong"
   defp get_response("version"), do: Application.spec(:code_bro_bot, :vsn) |> to_string()
+
+  defp get_response("fibonacci" <> number) do
+    number
+    |> String.trim()
+    |> String.to_integer()
+    |> Fibonacci.get()
+    |> Integer.to_string()
+  end
+
   defp get_response(_), do: "I don't know what to do with my hands"
 end
