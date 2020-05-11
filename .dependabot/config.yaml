@@ -4,7 +4,7 @@ update_configs:
   - package_manager: 'elixir:hex'
     update_schedule: 'live'
     directory: '/'
-    target_branch: 'elixir'
+    target_branch: 'master'
     allowed_updates:
       - match:
           update_type: 'all'
